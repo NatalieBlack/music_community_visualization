@@ -51,17 +51,23 @@ while option not in ("n", "l", "g", "x"):
 
         tar_name = None
         print "Press enter when finished with group"
-        while tar_name != None:
+        while tar_name != "":
             try:
-                tar = get_tar()
+                tar_name = raw_input("target:")
+                tar = DATA['nodes'].index({"name":tar_name,"group":1})
             except ValueError:
                 print "Target name does not match any nodes"
-                option = None #reset
+                continue
 
             val = raw_input("value:")
-            DATA['links'].append({"source":src, "target":tar, "value":val})
+            link = {"source":src, "target":tar, "value":val}
 
-        option = None #reset
+            if link in DATA['links']:
+                print "link already exists"
+            else:
+                DATA['links'].append(link)
+
+                option = None #reset
 
     elif option == "l":
 
@@ -80,7 +86,12 @@ while option not in ("n", "l", "g", "x"):
             continue
 
         val = raw_input("value:")
-        DATA['links'].append({"source":src, "target":tar, "value":val})
+        link = {"source":src, "target":tar, "value":val}
+
+        if link in DATA['links']:
+            print "link already exists"
+        else:
+            DATA['links'].append(link)
 
         option = None #reset
 
