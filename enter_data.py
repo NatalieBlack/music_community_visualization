@@ -81,7 +81,7 @@ while option not in ("n", "l", "g", "x"):
         try:
             tar = get_tar()
         except ValueError:
-            print "Source name does not match any nodes"
+            print "Target name does not match any nodes"
             option = None #reset
             continue
 
