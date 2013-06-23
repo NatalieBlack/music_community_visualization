@@ -10,7 +10,11 @@ def get_tar():
 
 def enter_node():
     name = raw_input("name:")
-    DATA['nodes'].append({"name":name, "group":1})
+
+    if {"name":name,"group":1} in DATA['nodes']:
+        print "Node already exists"
+    else:
+        DATA['nodes'].append({"name":name, "group":1})
 
 def finish(f, data):
     f.seek(0)
