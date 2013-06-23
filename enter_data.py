@@ -12,11 +12,11 @@ def enter_node():
     name = raw_input("name:")
     DATA['nodes'].append({"name":name, "group":1})
 
-def finish():
-    FILECONTENT.seek(0)
-    FILECONTENT.write(json.dumps(DATA))
-    FILECONTENT.truncate()
-    FILECONTENT.close()
+def finish(f, data):
+    f.seek(0)
+    f.write(json.dumps(data))
+    f.truncate()
+    f.close()
 
 
 FILECONTENT = open('data.json', 'r+')
@@ -81,4 +81,4 @@ while option not in ("n", "l", "g", "x"):
         option = None #reset
 
     elif option == "x":
-        finish()
+        finish(FILECONTENT, DATA)
