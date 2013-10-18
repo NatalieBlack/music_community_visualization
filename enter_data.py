@@ -1,4 +1,5 @@
 import json
+from operator import itemgetter
 
 def get_src():
     src_name = raw_input("source:")
@@ -8,6 +9,7 @@ def get_tar():
     tar_name = raw_input("target:")
     return DATA['nodes'].index({"name":tar_name,"group":1})
 
+
 def enter_node():
     name = raw_input("name:")
 
@@ -15,6 +17,22 @@ def enter_node():
         print "Node already exists"
     else:
         DATA['nodes'].append({"name":name, "group":1})
+
+def del_node(data, name1):
+    try:
+        a = map(itemgetter('name'), data['nodes']).remove(name1)
+    except ValueError:
+        print "That node is not in the list"
+
+#TODO fix this
+def del_link(data, name1, name2):
+    try:
+        map(itemgetter('source', 'target'), data['links']).remove((name1, name2))
+    except ValueError:
+        try:
+            map(itemgetter('target', 'source'), data['links']).remove((name1, name2))
+        except ValueError:
+            print "That link is not in the list"
 
 def finish(f, data):
     f.seek(0)
@@ -28,12 +46,14 @@ DATA = json.load(FILECONTENT)
 
 option = None 
 
-while option not in ("n", "l", "g", "x"):
+while option not in ("n", "l", "g", "d", "b", "x"):
 
     option = raw_input("""Options:
     n - enter new node
     l - enter new link
     g - enter set of links with common source
+    d - delete node
+    b - break link
     x - exit
     """)
 
@@ -95,5 +115,14 @@ while option not in ("n", "l", "g", "x"):
 
         option = None #reset
 
+    elif option == "d":
+        n = raw_input("Enter the name of the node you want to remove: ")
+        del_node(DATA, n)
+        option = None #reset
+    elif option == "b":
+        n1 = raw_input("Enter the name of the source of the link you want to remove: ")
+        n2 = raw_input("Enter the name of the target of the link you want to remove: ")
+        del_link(DATA, n1, n2)
+        option = None #reset
     elif option == "x":
         finish(FILECONTENT, DATA)
