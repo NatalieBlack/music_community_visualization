@@ -40,7 +40,9 @@ var color = d3.scale.category20b();
             var node = svg.selectAll(".node")
             .data(graph.nodes)
             .enter().append("text")
-            .text(function(d, i){return d.name}).style("fill", function(d){return color(d.group);}).style("font-family", "Arial").style("font-size", 12);
+            .text(function(d, i){return d.name}).style("fill", function(d){return color(d.group);}).style("font-family", "Arial").style("font-size", 12)
+
+            .call(force.drag);
             node.append("title")
             .text(function(d) { return d.name; });
             force.on("tick", function() {
