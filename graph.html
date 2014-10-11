@@ -2,28 +2,31 @@
 <meta charset="utf-8">
     <style>
 
-    path.link {
-      fill: none;
-      stroke: #666;
-      stroke-width: 1.5px;
-    }
+        path.link {
+          fill: none;
+          stroke: #666;
+          stroke-width: 1.5px;
+        }
 
-    circle.original {
-      fill: mediumaquamarine;
-    }
+        circle.original {
+          fill: mediumaquamarine;
+        }
 
-    text.original {
-      fill: mediumaquamarine;
-      font: 10px sans-serif;
-      pointer-events: none;
-    }
-    text.mouseover {
-        fill: tomato;
-        font: 24px sans-serif;
-    }
-    circle.mouseover {
-        fill: tomato;
-    }
+        text.original {
+          fill: mediumaquamarine;
+          font: 10px sans-serif;
+          pointer-events: none;
+        }
+
+        text.mouseover {
+            fill: tomato;
+            font: 24px sans-serif;
+        }
+
+        circle.mouseover {
+            fill: tomato;
+        }
+
 
     </style>
     <body>
@@ -66,6 +69,26 @@
                 .on("mouseover", mouseover)     
                 .on("mouseout", mouseout)     
                 .call(force.drag);
+
+            /*
+            var legend = svg.selectAll(".legend")
+                .data([])
+                .enter().append("g")
+                .attr("class", "legend");
+
+            legend.append("rect")
+              .attr("x", width - 18)
+              .attr("width", 18)
+              .attr("height", 4)
+              .style("fill", );
+
+            legend.append("text")
+              .attr("x", width - 24)
+              .attr("y", 9)
+              .attr("dy", ".35em")
+              .style("text-anchor", "end")
+              .text(function(d) { return ; });
+            */
 
             node.append("circle")
                 .attr("r", 5)
@@ -119,8 +142,8 @@
                     .attr("class", "original");
             }
 
-        });
 
-    </script>
-    </body>
+
+        });
+        </script>
 </html>
