@@ -1,14 +1,12 @@
 import json
 from operator import itemgetter
 
-def get_src():
-    src_name = raw_input("source:")
-    return DATA['nodes'].index({"name":src_name,"group":1})
+def get_node_by_name(name):
+    return DATA['nodes'].index({"name":name,"group":1})
 
-def get_tar():
-    tar_name = raw_input("target:")
-    return DATA['nodes'].index({"name":tar_name,"group":1})
-
+def get_link_node(prompt):
+    node_name = raw_input(prompt + ":")
+    return get_node_by_name(node_name)
 
 def enter_node():
     name = raw_input("name:")
@@ -19,20 +17,30 @@ def enter_node():
         DATA['nodes'].append({"name":name, "group":1})
 
 def del_node(data, name1):
-    try:
-        a = map(itemgetter('name'), data['nodes']).remove(name1)
-    except ValueError:
-        print "That node is not in the list"
+    nodes = data['nodes']
+    for n in xrange(len(nodes)):
+        if(nodes[n]["name"] == name1):
+            del nodes[n]
+            data['nodes'] = nodes
+            return data
 
-#TODO fix this
+    print "That node is not in the list"
+    return data
+
 def del_link(data, name1, name2):
-    try:
-        map(itemgetter('source', 'target'), data['links']).remove((name1, name2))
-    except ValueError:
-        try:
-            map(itemgetter('target', 'source'), data['links']).remove((name1, name2))
-        except ValueError:
-            print "That link is not in the list"
+    name1_index = get_node_by_name(name1)
+    name2_index = get_node_by_name(name2)
+
+    links = data['links']
+    for i in xrange(len(links)):
+        if(((links[i]['target'] == name1_index) and (links[i]['source'] == name2_index)) or 
+           ((links[i]['target'] == name2_index) and (links[i]['source'] == name1_index))):
+            del links[i]
+            data['links'] = links
+            return data
+
+    print "That link is not in the list"
+    return data
 
 def finish(f, data):
     f.seek(0)
@@ -63,7 +71,7 @@ while option not in ("n", "l", "g", "d", "b", "x"):
 
     elif option == "g":
         try:
-            src = get_src()
+            src = get_link_node("source")
         except ValueError:
             print "Source name does not match any nodes"
             option = None #reset
@@ -92,14 +100,14 @@ while option not in ("n", "l", "g", "d", "b", "x"):
     elif option == "l":
 
         try:
-            src = get_src()
+            src = get_link_node("source")
         except ValueError:
             print "Source name does not match any nodes"
             option = None #reset
             continue
 
         try:
-            tar = get_tar()
+            tar = get_link_node("target")
         except ValueError:
             print "Target name does not match any nodes"
             option = None #reset
@@ -116,13 +124,14 @@ while option not in ("n", "l", "g", "d", "b", "x"):
         option = None #reset
 
     elif option == "d":
-        n = raw_input("Enter the name of the node you want to remove: ")
-        del_node(DATA, n)
+        #n = raw_input("Enter the name of the node you want to remove: ")
+        #DATA = del_node(DATA, n)
+        print "This option is broken"
         option = None #reset
     elif option == "b":
         n1 = raw_input("Enter the name of the source of the link you want to remove: ")
         n2 = raw_input("Enter the name of the target of the link you want to remove: ")
-        del_link(DATA, n1, n2)
+        DATA = del_link(DATA, n1, n2)
         option = None #reset
     elif option == "x":
         finish(FILECONTENT, DATA)
